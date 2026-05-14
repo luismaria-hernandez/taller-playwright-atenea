@@ -23,21 +23,28 @@ export class RegisterPage {
         await this.page.goto('http://localhost:3000/');
     }
 
-    async completarFormularioRegistro(firstName: string, lastName: string, email: string, password: string) {
+    async completarFormularioRegistro(usuario: { nombre: string, apellido: string, email: string, password: string }) {
 
-        await this.firstNameInput.fill(firstName);
-        await this.lastNameInput.fill(lastName);
-        await this.emailInput.fill(email);
-        await this.passwordInput.fill(password);
+    await this.firstNameInput.fill(usuario.nombre);
+    await this.lastNameInput.fill(usuario.apellido);
+    await this.emailInput.fill(usuario.email);
+    await this.passwordInput.fill(usuario.password);
 
+    }
+
+    async hacerClickBotonLogin(){
+        await this.loginButton.click();
     }
 
     async hacerClickBotonRegistro(){
         await this.registerButton.click();
     }
 
-    async completarYhacerClickBotonRegistro(firstName: string, lastName: string, email: string, password: string) {
-        await this.completarFormularioRegistro(firstName, lastName, email, password);
+    async completarYhacerClickBotonRegistro( nombre: string, apellido: string, email: string, password: string ) {
+        await this.firstNameInput.fill(nombre);
+        await this.lastNameInput.fill(apellido);
+        await this.emailInput.fill(email);
+        await this.passwordInput.fill(password);
         await this.hacerClickBotonRegistro();
     }
 

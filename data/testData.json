@@ -1,0 +1,9 @@
+{
+  "usuarios":
+    {
+      "nombre": "Juan",
+      "apellido": "García",
+      "email": "juan.garcia@example.com",
+      "password": "Password123!"
+    }
+}
