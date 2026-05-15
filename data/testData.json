@@ -5,5 +5,11 @@
       "apellido": "García",
       "email": "juan.garcia@example.com",
       "password": "Password123!"
+    },
+
+    "login": 
+    {
+      "mail":"juan.garcia@example.com",
+      "password": "Password123!"
     }
 }

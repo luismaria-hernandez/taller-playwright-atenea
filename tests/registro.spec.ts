@@ -36,7 +36,7 @@ test('TC-3 Verificar que el botón de registro se habilite al completar los camp
 
 test('TC-4 Verificar redirieccionamiento a la página de Login', async ({ page }) => {
   
-  await registerPage.hacerClickBotonLogin;
+  await registerPage.hacerClickBotonLogin();
   await expect(page).toHaveURL('http://localhost:3000/login');
 
 });
@@ -49,7 +49,7 @@ test('TC-5 Verificar registro exitoso', async ({ page }) => {
 
 test('TC-6 Verificar que un usuario no pueda registrarse con un mail ya existente', async ({ page }) => {
 
-  const email = 'luisma'+Math.random().toString()+'@test.com';
+  const email = 'luisma'+(Math.random()).toString()+'@test.com';
 
   registerPage.completarYhacerClickBotonRegistro('Luis Maria','Hernandez',email,'clave123');
   await expect(page.getByText('Registro exitoso')).toBeVisible();
