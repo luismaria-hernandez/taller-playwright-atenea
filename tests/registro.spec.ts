@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, request } from '@playwright/test';
 import {RegisterPage} from '../pages/registerPage';
 import TestData from '../data/testData.json';
 
@@ -59,5 +59,68 @@ test('TC-6 Verificar que un usuario no pueda registrarse con un mail ya existent
   await expect(page.getByText('Registro exitoso')).not.toBeVisible();
   await expect(page.getByText('Email already in use')).toBeVisible();
   
+});
+
+test('TC-8 Verificar registro exitoso con datos válidos verificando respuesta de la API', async ({page}) => {
+
+  const email = 'luis'+(Math.random()).toString()+'@mail.com';
+  const firstName = 'Luis María';
+  const lastName = 'Hernandez';
+  
+  registerPage.completarYhacerClickBotonRegistro(firstName, lastName, email, 'clave123');
+  
+  const responsePromise = page.waitForResponse('http://localhost:6007/api/auth/signup');
+  const response = await responsePromise;
+  
+  // Validar status de la respuesta
+  expect(response.status()).toBe(201);
+  
+  // Obtener y parsear la respuesta JSON
+  const responseBody = await response.json();
+  
+  // Validar estructura y contenido del token
+  expect(responseBody).toHaveProperty('token');
+  expect(typeof responseBody.token).toBe('string');
+  
+  // Validar que el token es un JWT válido (formato: header.payload.signature)
+  const tokenParts = responseBody.token.split('.');
+  expect(tokenParts).toHaveLength(3);
+  
+  // Validar estructura del objeto user
+  expect(responseBody).toHaveProperty('user');
+  expect(responseBody.user).toHaveProperty('id');
+  expect(responseBody.user).toHaveProperty('firstName');
+  expect(responseBody.user).toHaveProperty('lastName');
+  expect(responseBody.user).toHaveProperty('email');
+  
+  // Validar valores del objeto user
+  expect(typeof responseBody.user.id).toBe('string');
+  expect(responseBody.user.firstName).toBe(firstName);
+  expect(responseBody.user.lastName).toBe(lastName);
+  expect(responseBody.user.email).toBe(email);
+  
+  // Validar que el mensaje de éxito se muestre en la UI
+  await expect(page.getByText('Registro exitoso')).toBeVisible();
+});
+
+//Este caso de prueba es exactamente el mismo que el anterior pero la diferencia está en que en el TC-9 no pasamos por el frontend, directamente hacemos la llamada a la API.
+
+test('TC-9 Verificar el signup desde la API', async ({page,request}) => {
+  const email = 'luisma'+(Math.random()).toString()+'@mail.com';
+  const response = await request.post('http://localhost:6007/api/auth/signup', {
+    headers: {
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+    },
+    data: {
+      firstName: TestData.usuarios.nombre,
+      lastName: TestData.usuarios.apellido,
+      email: email,
+      password: TestData.usuarios.password
+    }
+  });
+  const responseBody = await response.json();
+  expect (response.status()).toBe(201);
+
 });
 

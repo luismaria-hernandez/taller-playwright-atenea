@@ -18,3 +18,6 @@ test('TC-7 Verificar inicio de sesion exitoso', async ({page}) =>{
     await expect(page.getByText('Inicio de sesión exitoso')).toBeVisible();
     await expect(dashboardPage.dashboardTitle).toBeVisible();
 });
+
+
+
