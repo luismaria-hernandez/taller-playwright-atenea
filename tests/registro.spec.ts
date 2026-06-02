@@ -124,3 +124,25 @@ test('TC-9 Verificar el signup desde la API', async ({page,request}) => {
 
 });
 
+/*Con esta prueba estamos haciendo un mock de las respuestas de las APIS para poder probar el comportamiento del front ante un fallo detenerminado.
+Con esto no hace falta que el desarrollador tengo que dar de baja el servidor para ver como responde la app ante un error de servidor, por ejemplo*/
+
+test('TC-10 Verificar el comportamiento de frontend ante una respuesta 500', async ({page}) => {
+  const email = 'luisma'+(Math.random()).toString()+'@mail.com';
+
+  await page.route('**/api/auth/signup', route => {
+    route.fulfill({
+      status: 500,
+      contentType: 'application/json',
+      body: JSON.stringify({message: 'Error en el registro'})
+    });
+  });
+
+  await registerPage.completarYhacerClickBotonRegistro(
+    usuario.nombre,
+    usuario.apellido,
+    email,
+    usuario.password
+  );
+
+});
