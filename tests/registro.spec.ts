@@ -1,12 +1,19 @@
 import { test, expect, request } from '@playwright/test';
 import {RegisterPage} from '../pages/registerPage';
 import TestData from '../data/testData.json';
+import { BackendUtils } from '../utils/backendUtils';
+import { LoginPage } from '../pages/loginPage';
+import { DashboardPage } from '../pages/dashboardPage';
 
 let registerPage: RegisterPage;
 let usuario = TestData.usuarios;
+let loginPage: LoginPage;
+let dashboardPage: DashboardPage;
 
 test.beforeEach(async ({ page }) => {
+  loginPage = new LoginPage(page);
   registerPage = new RegisterPage(page);
+  dashboardPage = new DashboardPage(page);
   await registerPage.visitarPaginaRegistro();
 })
 
@@ -145,4 +152,28 @@ test('TC-10 Verificar el comportamiento de frontend ante una respuesta 500', asy
     usuario.password
   );
 
+});
+
+test('TC-11 Loggearse con nuevo usuario creado por backend', async ({page,request}) => {
+  const nuevoUsuario = await BackendUtils.enviarRequestDeBackend(request, TestData.usuarios);
+  
+  await loginPage.visitarPaginaLogin();
+  const responsePromiseLogin = page.waitForResponse('**/api/auth/login');//Primero se genera la promesa
+  await loginPage.llenarFormularYlogin(nuevoUsuario); //Luego se ejecuta la acción
+  const responseLogin = await responsePromiseLogin; 
+  const responseBodyLoginJson = await responseLogin.json(); // Y por último se captura el objeto JSON
+
+  await expect(responseLogin.status()).toBe(200);
+  await expect(responseBodyLoginJson).toHaveProperty('token');
+  await expect(typeof responseBodyLoginJson.token).toBe('string'); //Esto es para validar los token
+  await expect(responseBodyLoginJson).toHaveProperty('user');
+  await expect(responseBodyLoginJson.user).toEqual(expect.objectContaining({
+    id: expect.any(String),
+    firstName: TestData.usuarios.nombre,
+    lastName: TestData.usuarios.apellido,
+    email: nuevoUsuario.email
+  }));
+
+  await expect(page.getByText('Inicio de sesión exitoso')).toBeVisible();
+  await expect(dashboardPage.dashboardTitle).toBeVisible();
 });
