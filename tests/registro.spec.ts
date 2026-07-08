@@ -137,7 +137,7 @@ Con esto no hace falta que el desarrollador tengo que dar de baja el servidor pa
 test('TC-10 Verificar el comportamiento de frontend ante una respuesta 500', async ({page}) => {
   const email = 'luisma'+(Math.random()).toString()+'@mail.com';
 
-  await page.route('**/api/auth/signup', route => {
+  await page.route('**/api/auth/signup', route => { // Se usa para controlar las peticiones de red de un endpoint específico. Se lo coloca antes de ejecutar la acción porque page route funciona como un interceptor de red, detiene el request y lo reemplaza por uno que querramos
     route.fulfill({
       status: 500,
       contentType: 'application/json',
@@ -165,7 +165,7 @@ test('TC-11 Loggearse con nuevo usuario creado por backend', async ({page,reques
 
   await expect(responseLogin.status()).toBe(200);
   await expect(responseBodyLoginJson).toHaveProperty('token');
-  await expect(typeof responseBodyLoginJson.token).toBe('string'); //Esto es para validar los token
+  await expect(typeof responseBodyLoginJson.token).toBe('string'); //typeof se usar para validar el tipo de dato que contiene la variable en su interior
   await expect(responseBodyLoginJson).toHaveProperty('user');
   await expect(responseBodyLoginJson.user).toEqual(expect.objectContaining({
     id: expect.any(String),

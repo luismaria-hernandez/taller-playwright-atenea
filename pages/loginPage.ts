@@ -27,7 +27,7 @@ export class LoginPage {
         await this.loginButton.click();
     }
 
-    async llenarFormularYlogin(usuario: {email: string, password: string}){
+    async llenarFormularYlogin(usuario: {email: string, password: any}){
         await this.llenarFormulario(usuario);
         await this.presionarBotonInicioSesion();
 
