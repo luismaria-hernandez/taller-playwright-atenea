@@ -34,7 +34,7 @@ setup('Generar usuario que envía dinero', async ({page,request}) => {
 
 });
 
-setup('Generar usuario que recibe dinero', async ({page,request}) => {
+setup('Generar usuario que recibe dinero', async ({page}) => {
     const usuarioValido = TestData.login;
    
     await loginPage.llenarFormularYlogin(usuarioValido);

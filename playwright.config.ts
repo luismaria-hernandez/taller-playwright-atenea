@@ -36,12 +36,13 @@ export default defineConfig({
   projects: [
     {
       name:'setup',
-      testMatch: /.*\.setup\.ts/
+      testMatch: /.*\.setup\.ts/ //Lo que estamos haciendo aquí es decirle que todo lo que tenga el nombre setup va a ser tenido en cuenta como proyecto
     },
 
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      dependencies: ['setup'] //Lo que hacemos con esto es generar una dependencia con el proyecto de setup. Esto quiere decir, que setup se va a ejecutar antes que chromium.
     },
 
     {

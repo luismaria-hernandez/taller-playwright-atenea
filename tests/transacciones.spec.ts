@@ -23,7 +23,7 @@ test.beforeEach( async ({page}) => {
     modalEnviarDinero = new ModalEnviarDinero(page);
 });
 
-testUsuarioEnvia('Validar la transacción exitosa', async ({page}) => {
+testUsuarioEnvia('TC-12 Validar la transacción exitosa', async ({page}) => {
     await dashboardPage.irPaginaDashboard()
     await expect(dashboardPage.dashboardTitle).toBeVisible();
     await dashboardPage.botonEnviarDinero.click();
@@ -34,4 +34,10 @@ testUsuarioEnvia('Validar la transacción exitosa', async ({page}) => {
     await modalEnviarDinero.botonEnviar.click();
     await expect(page.getByText('Transferencia enviada a '+(TestData.login.email).toString())).toBeVisible();
 
+});
+
+testUsuarioRecibe('TC-13 Validar que el usuario reciba una transferencia', async ({page}) => {
+    await dashboardPage.irPaginaDashboard();
+    await expect(dashboardPage.dashboardTitle).toBeVisible();
+    
 });
