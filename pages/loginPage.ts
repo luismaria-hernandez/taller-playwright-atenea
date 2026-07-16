@@ -18,8 +18,8 @@ export class LoginPage {
         await this.page.goto('http://localhost:3000/login');
     }
 
-    async llenarFormulario(usuario: {mail: string, password: string}){
-        await this.inputMail.fill(usuario.mail);
+    async llenarFormulario(usuario: {email: string, password: string}){
+        await this.inputMail.fill(usuario.email);
         await this.inputPassword.fill(usuario.password);
     }
 
@@ -27,7 +27,7 @@ export class LoginPage {
         await this.loginButton.click();
     }
 
-    async llenarFormularYlogin(usuario: {mail: string, password: string}){
+    async llenarFormularYlogin(usuario: {email: string, password: any}){
         await this.llenarFormulario(usuario);
         await this.presionarBotonInicioSesion();
 

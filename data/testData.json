@@ -9,7 +9,14 @@
 
     "login": 
     {
-      "mail":"juan.garcia@example.com",
+      "email":"juan.garcia@example.com",
+      "password": "Password123!"
+    },
+
+    "login2":
+    {
+      "email": "mile.garcia@example.com",
       "password": "Password123!"
     }
+
 }
