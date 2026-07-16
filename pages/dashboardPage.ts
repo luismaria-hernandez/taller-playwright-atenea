@@ -6,12 +6,16 @@ export class DashboardPage {
     readonly dashboardTitle: Locator;
     readonly botonDeAagregarCuenta: Locator;
     readonly botonEnviarDinero : Locator;
+    readonly elementoListaTransferencia: Locator;
+    readonly elementosListaMontosTransferencia: Locator;
 
     constructor(page: Page){
         this.page= page;
         this.dashboardTitle = page.getByTestId('titulo-dashboard');
         this.botonDeAagregarCuenta = page.getByTestId('tarjeta-agregar-cuenta');
         this.botonEnviarDinero = page.getByTestId('boton-enviar');
+        this.elementoListaTransferencia = page.locator('[data-testid="descripcion-transaccion"]');
+        this.elementosListaMontosTransferencia = page.locator('[data-testid="monto-transaccion"]');
     }
 
     async irPaginaDashboard (){
