@@ -50,7 +50,7 @@ jobs:
 
         #Vamos a esperar que se levante el puerto del backend  
         - name: Esperar Backend
-          run: npx wait-on tcp:${{env.PORT}}
+          run: wait-on tcp:${{env.PORT}}
 
         #creamos la carpeta de frontend
         - name: Crear la carpeta de frontend
