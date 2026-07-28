@@ -41,14 +41,8 @@ jobs:
         - name: Construir backend
           run: |
             cd app/backend
-            npm run start:backend &
+            npm run dev > backend.log 2>&1 &
         #La última expresión es un standard para poder levantar el servicio
-
-        - name: Ver puertos abiertos
-          run: |
-            sleep 5
-            netstat -tln
-            lsof -i :6007 || true
 
         #Se instala la herramienta wait-on de manera global
         - name: Instalar wait-on
