@@ -26,6 +26,8 @@ jobs:
         - name: Clonar repo Athenea Redux Bank
           run: |
             git clone https://github.com/luismaria-hernandez/taller-playwright-atenea.git app
+        - name: Crear carpeta backend
+          run: mkdir -p app/backend
         - name: Crear archivo .env para el backend
           run: |
               echo "MONGO_URI=${{env.MONGO_URI}}" >> app/backend/.env
