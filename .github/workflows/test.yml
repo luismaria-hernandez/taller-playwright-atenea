@@ -41,7 +41,7 @@ jobs:
         - name: Construir backend
           run: |
             cd app/backend
-            npm run dev > backend.log 2>&1 &
+            npm run start:backend &
         #La última expresión es un standard para poder levantar el servicio
 
         #Se instala la herramienta wait-on de manera global
