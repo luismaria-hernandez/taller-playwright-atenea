@@ -44,6 +44,12 @@ jobs:
             npm run start:backend &
         #La última expresión es un standard para poder levantar el servicio
 
+        - name: Ver puertos abiertos
+          run: |
+            sleep 5
+            netstat -tln
+            lsof -i :6007 || true
+
         #Se instala la herramienta wait-on de manera global
         - name: Instalar wait-on
           run: npm install -g wait-on
