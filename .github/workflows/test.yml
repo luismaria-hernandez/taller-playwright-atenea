@@ -23,26 +23,37 @@ jobs:
     steps:
         - name: Checkout repo actual (con el workflow)
           uses: actions/checkout@v3
+          
         - name: Clonar repo Athenea Redux Bank
           run: |
             git clone https://github.com/luismaria-hernandez/taller-playwright-atenea.git app
+
         - name: Crear carpeta backend
           run: mkdir -p app/backend
+
         - name: Crear archivo .env para el backend
           run: |
               echo "MONGO_URI=${{env.MONGO_URI}}" >> app/backend/.env
               echo "JWT_SECRET=${{env.JWT_SECRET}}" >> app/backend/.env
               echo "PORT=${{env.PORT}}" >> app/backend/.env
               echo "VITE_API_URL=${{env.VITE_API_URL}}" >> app/backend/.env
+
         - name: Instalar dependecias de backend
           run: |
             cd app/backend
             npm install
-        - name: Construir backend
+
+        - name: Iniciar backend en segundo plano
           run: |
-            cd app/backend
-            npm run dev > backend.log 2>&1 &
+           cd app/backend
+           PORT=6007 npm start &
         #La última expresión es un standard para poder levantar el servicio
+
+        - name: Ver puertos abiertos (debug)
+          run: |
+           sleep 5
+           netstat -tln
+           lsof -i :6007 || true
 
         #Se instala la herramienta wait-on de manera global
         - name: Instalar wait-on
