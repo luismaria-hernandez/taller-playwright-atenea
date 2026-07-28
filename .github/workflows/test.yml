@@ -27,7 +27,7 @@ jobs:
           run: |
             git clone https://github.com/luismaria-hernandez/taller-playwright-atenea.git app
         - name: Crear carpeta backend
-          run: mkdir -p app/backend
+          run: mkdir -p app/ba
         - name: Crear archivo .env para el backend
           run: |
               echo "MONGO_URI=${{env.MONGO_URI}}" >> app/backend/.env
@@ -50,7 +50,7 @@ jobs:
 
         #Vamos a esperar que se levante el puerto del backend  
         - name: Esperar Backend
-          run: wait-on tcp:6007
+          run: npx wait-on tcp:6007
 
         #instalar dependencias del front end
         - name: Instalar dependencia front end
