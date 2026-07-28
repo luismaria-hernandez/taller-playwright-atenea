@@ -39,7 +39,7 @@ setup('Generar usuario que envía dinero', async ({page,request}) => {
     await expect(page.getByText('Cuenta creada exitosamente')).toBeVisible();
     await page.waitForTimeout(5000);
     
-    await page.context().storageState({path: usuarioEnviaAuthFile});
+    await page.context().storageState({path: usuarioEnviaAuthFile}); //Context: Extrae el estado actual de la página y storageState guarda los datos de autenticación y almacenamiento del contexto
 
 });
 

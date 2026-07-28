@@ -14,7 +14,7 @@ let modalEnviarDinero: ModalEnviarDinero;
 como una prueba con los datos guardados en los archivos que se les indica*/
 
 const testUsuarioEnvia = test.extend({
-  storageState: './playwright/.auth/usuarioEnvia.json'
+  storageState: './playwright/.auth/usuarioEnvia.json' // storageState se utiliza para guardar el estado de autenticación de una sesión y cookies. Estos son archivos que aún no se han creado, pero que van a crearse una vez que se ejecute la prueba 
 });
 
 const testUsuarioRecibe = test.extend({
@@ -71,7 +71,7 @@ testUsuarioRecibe('TC-14 Verificar transferencia recibida (enviada por API)', as
 
   //#2 Acción: Obtener cuenta y enviar transferencia via API
 
-  //Primero, obtenemos la cuenta del remitente para daber el id de origen
+  //Primero, obtenemos la cuenta del remitente para saber el id de origen
 
   const respuestaDeCuentas = await request.get('http://localhost:6007/api/accounts', {
     headers: {
