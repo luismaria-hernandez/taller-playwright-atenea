@@ -72,4 +72,17 @@ jobs:
             VITE_API_URL: ${{env.VITE_API_URL}}
             run: wait-on http://localhost:3000
 
-          
+        #Vamos a empezar a ejecutar las pruebas
+        - name: Instalar y ejecutar pruebas
+          run: |
+            cd tests
+            npm install
+            npx playwright install
+            npx playwright test --reporter=html
+
+        - name: Guardar reportes como artefactos
+          if: always()
+          uses: actios/upload-artifacts@v3
+          with:
+            name: Reportes GitHub
+            path: ./playwright-report
