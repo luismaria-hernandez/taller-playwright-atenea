@@ -24,6 +24,11 @@ jobs:
         - name: Checkout repo actual (con el workflow)
           uses: actions/checkout@v3
           
+        - name: Usar Node 24
+          uses: actions/setup-node@v4
+          with:
+            node-version: 24
+
         - name: Clonar repo Athenea Redux Bank
           run: |
             git clone https://github.com/Atenea-Conocimientos/redux-athena-bank.git app
