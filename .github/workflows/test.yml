@@ -77,13 +77,15 @@ jobs:
           env: 
             VITE_API_URL: ${{env.VITE_API_URL}}
             run: wait-on http://localhost:3000
+        
+        - name: Levantar el front end
+          run: npm run dev
 
         #Vamos a empezar a ejecutar las pruebas
         - name: Instalar y ejecutar pruebas
           run: |
             cd tests
             npm install
-            npm run dev
             npx playwright install --with-deps
             npx playwright test --reporter=html
 
