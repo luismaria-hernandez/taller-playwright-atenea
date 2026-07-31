@@ -77,12 +77,12 @@ jobs:
           run: |
             cd tests
             npm install
-            npx playwright install
+            npx playwright install-deps
             npx playwright test --reporter=html
 
         - name: Guardar reportes como artefactos
           if: always()
-          uses: actions/upload-artifact@v4
+          uses: actions/playwright-gihub-action@v1
           with:
             name: Reportes GitHub
             path: ./playwright-report
