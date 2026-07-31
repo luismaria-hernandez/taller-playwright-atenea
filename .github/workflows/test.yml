@@ -82,7 +82,7 @@ jobs:
 
         - name: Guardar reportes como artefactos
           if: always()
-          uses: actions/playwright-github-action@v1
+          uses: microsoft/playwright-github-action@v1
           with:
             name: Reportes GitHub
             path: ./playwright-report
