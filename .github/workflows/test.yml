@@ -82,7 +82,7 @@ jobs:
 
         - name: Guardar reportes como artefactos
           if: always()
-          uses: actios/upload-artifacts@v3
+          uses: actions/upload-artifacts@v3
           with:
             name: Reportes GitHub
             path: ./playwright-report
