@@ -15,6 +15,7 @@ jobs:
         ports:
           - 27017:27017
     env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
       MONGO_URI: ${{secrets.MONGO_URI}}
       JWT_SECRET: ${{secrets.JWT_SECRET}}
       PORT: 6007
@@ -24,10 +25,10 @@ jobs:
         - name: Checkout repo actual (con el workflow)
           uses: actions/checkout@v3
           
-        - name: Usar Node 24
+        - name: Usamos la version 20  de node
           uses: actions/setup-node@v4
           with:
-            node-version: 24
+            node-version: 20
 
         - name: Clonar repo Athenea Redux Bank
           run: |
