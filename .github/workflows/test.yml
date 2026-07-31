@@ -74,6 +74,7 @@ jobs:
           run: |
             cd app/frontend
             npm install
+            npm run dev
           env: 
             VITE_API_URL: ${{env.VITE_API_URL}}
             run: wait-on http://localhost:3000
