@@ -26,7 +26,7 @@ jobs:
           
         - name: Clonar repo Athenea Redux Bank
           run: |
-            git clone https://github.com/luismaria-hernandez/taller-playwright-atenea.git app
+            git clone https://github.com/Atenea-Conocimientos/redux-athena-bank.git app
 
         - name: Crear carpeta backend
           run: mkdir -p app/backend
@@ -46,8 +46,8 @@ jobs:
         - name: Iniciar backend en segundo plano
           run: |
            cd app/backend
-           PORT=6007 npm start &
-        #La última expresión es un standard para poder levantar el servicio
+           npm run dev > backend.log 2>&1 &
+        #La última expresión es un standard para poder levantar el servicio. Lo que va a hacer levantar el back end, ysi hay un error lo coloca en un archivo .log
 
         - name: Ver puertos abiertos (debug)
           run: |
@@ -62,10 +62,6 @@ jobs:
         #Vamos a esperar que se levante el puerto del backend  
         - name: Esperar Backend
           run: wait-on tcp:${{env.PORT}}
-
-        #creamos la carpeta de frontend
-        - name: Crear la carpeta de frontend
-          run: mkdir -p app/frontend
 
         #instalar dependencias del front end
         - name: Instalar dependencia front end
