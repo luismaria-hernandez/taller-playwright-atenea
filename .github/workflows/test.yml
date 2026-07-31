@@ -79,7 +79,9 @@ jobs:
             run: wait-on http://localhost:3000
         
         - name: Levantar el front end
-          run: npm run dev
+          run: |
+            cd app/frontend
+            npm run dev
 
         #Vamos a empezar a ejecutar las pruebas
         - name: Instalar y ejecutar pruebas
