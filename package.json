@@ -18,6 +18,7 @@
   "homepage": "https://github.com/luismaria-hernandez/taller-playwright-atenea#readme",
   "devDependencies": {
     "@playwright/test": "^1.59.1",
-    "@types/node": "^25.9.5"
+    "@types/node": "^25.9.5",
+    "typescript": "^7.0.2"
   }
 }

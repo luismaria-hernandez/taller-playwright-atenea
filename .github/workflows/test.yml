@@ -1,0 +1,101 @@
+name: CI - clonando app y ejecutando tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+      MONGO_URI: ${{secrets.MONGO_URI}}
+      JWT_SECRET: ${{secrets.JWT_SECRET}}
+      PORT: 6007
+      VITE_API_URL: http://localhost:6007/api #este es el puerto en donde se va a exponer la API de la base de datos
+
+    steps:
+        - name: Checkout repo actual (con el workflow)
+          uses: actions/checkout@v3
+          
+        - name: Usamos la version 20  de node
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20
+
+        - name: Clonar repo Athenea Redux Bank
+          run: |
+            git clone https://github.com/Atenea-Conocimientos/redux-athena-bank.git app
+
+        - name: Crear carpeta backend
+          run: mkdir -p app/backend
+
+        - name: Crear archivo .env para el backend
+          run: |
+              echo "MONGO_URI=${{env.MONGO_URI}}" >> app/backend/.env
+              echo "JWT_SECRET=${{env.JWT_SECRET}}" >> app/backend/.env
+              echo "PORT=${{env.PORT}}" >> app/backend/.env
+              echo "VITE_API_URL=${{env.VITE_API_URL}}" >> app/backend/.env
+
+        - name: Instalar dependecias de backend
+          run: |
+            cd app/backend
+            npm install
+
+        - name: Iniciar backend en segundo plano
+          run: |
+           cd app/backend
+           npm run dev > backend.log 2>&1 &
+        #La última expresión es un standard para poder levantar el servicio. Lo que va a hacer levantar el back end, ysi hay un error lo coloca en un archivo .log
+
+        - name: Ver puertos abiertos (debug)
+          run: |
+           sleep 5
+           netstat -tln
+           lsof -i :6007 || true
+
+        #Se instala la herramienta wait-on de manera global
+        - name: Instalar wait-on
+          run: npm install -g wait-on
+
+        #Vamos a esperar que se levante el puerto del backend  
+        - name: Esperar Backend
+          run: wait-on tcp:${{env.PORT}}
+
+        #instalar dependencias del front end
+        - name: Instalar dependencia front end
+          run: |
+            cd app/frontend
+            npm install
+            npm run dev -- --host 0.0.0.0 > frontend.log 2>&1 &
+            
+        - name: Esperar front end 
+          run: wait-on http://localhost:3000
+
+        #Vamos a empezar a ejecutar las pruebas
+        - name: Instalar y ejecutar pruebas
+          run: |
+            cd tests
+            npm install
+            npx playwright install --with-deps
+            npx playwright test --reporter=html
+
+        - name: Guardar reportes como artefactos
+          if: always()
+          uses: actions/upload-artifact@v4
+          with:
+            name: Reportes GitHub
+            path: ./playwright-report
+        
+        - name: Deployar los reportes a github pages
+          if: always()
+          run: |
+              git config --global user.name "github-actions[bot]"
+              git config --global user.email "github-actions[bot]@users.noreply.github.com"
